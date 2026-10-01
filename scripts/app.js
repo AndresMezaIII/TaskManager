@@ -1,10 +1,9 @@
-function example() {
-  console.log("hello world");
+function saveTask() {
+  //const taskToSave = new Task();
 }
 
 function init() {
   console.log("Hello from the init");
-  example();
 }
 
 window.onload = init;
