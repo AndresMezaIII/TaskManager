@@ -16,18 +16,15 @@
         <h2>New Task</h2>
         <form id="taskForm">
           <div class="form-grid">
+            <label>Title <input id="txtTitle" placeholder="" required /></label>
             <label
-              >Title <input id="txtTitle" required placeholder="Pay the bills"
+              >Description <input id="txtDescription" placeholder="" required
             /></label>
             <label
-              >Description
-              <input id="txtDescription" placeholder="Electricity and water" required
+              >Color <input id="selColor" type="color" value="#000000" required
             /></label>
-            <label
-              >Color <input id="selColor" type="color" value="#ffcc00" required
-            /></label>
-              
-            <label>Date <input id="selDate" type="date" required/></label>
+
+            <label>Date <input id="selDate" type="date" required /></label>
             <label
               >Status
               <select id="selStatus" required>
@@ -41,8 +38,10 @@
               <input
                 id="numBudget"
                 type="number"
+                min="0"
+                ;
+                max="2500"
                 step="0.01"
-                placeholder="100.00"
                 required
             /></label>
           </div>

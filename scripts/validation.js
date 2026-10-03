@@ -1,34 +1,21 @@
-let title = $("#txtTitle").val().trim();
-let description = $("#txtDescription").val().trim();
-let color = $("#selColor").val().trim();
-let date = $("#selDate").val().trim();
-let status = $("#selStatus").val().trim();
-let budget = $("#numBudget").val().trim();
+let empty = false;
+$("#btnSave").click(function (e) {
+  e.preventDefault();
+  empty = false;
+  for (const SELECTOR of [
+    "#txtTitle",
+    "#txtDescription",
+    "#selColor",
+    "#numBudget",
+    "#selDate",
+    "#selStatus",
+  ]) {
+    const value = $(SELECTOR).val();
 
-
-
-$("#btnSave").click(function(e) {
-    e.preventDefault();
-    if (title == "") {
-        $("#txtTitle").css("border","red 1px solid");
+    if (value == null || value.trim() === "") {
+      $(SELECTOR).css("border", "1px solid red");
+      empty = true;
     }
-
-    if (description == "") {
-        $("#txtDescription").css("border","red 1px solid");
-    }
-
-    if (color == "") { 
-        $("#selColor").css("border","red 1px solid");
-    }
-
-    if (date == "") {
-        $("#selDate").css("border","red 1px solid");
-    }
-    if (status == "") {
-        $("#selStatus").css("border","red 1px solid");
-    }
-    if (budget == "") {
-        $("#numBudget").css("border","red 1px solid");
-    }
-    alert("Please fill in all required fields.");
+  }
+  alert("Please fill out all fields");
 });
