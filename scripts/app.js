@@ -1,29 +1,7 @@
 const API =
   "https://106api-b0bnggbsgnezbzcz.westus3-01.azurewebsites.net/api/tasks";
 
-function saveTask() {
-  console.log("Saving Tasks...");
 
-  //read the values of each of the six inputs
-  //title, description, color, date, status, budget
-
-  //1. Read the values out of the DOM
-  const TITLE = $("#txtTitle").val();
-  const DESCRIPTION = $("#txtDescription").val();
-  const COLOR = $("#selColor").val();
-  const DATE = $("#selDate").val();
-  const STATUS = $("#selStatus").val();
-  const BUDGET = $("#numBudget").val();
-
-  //2. Build an object using our model
-  const TASKTOSAVE = new Task(TITLE, DESCRIPTION, COLOR, DATE, STATUS, BUDGET);
-
-  //3. Log task to show it works
-  console.log(TASKTOSAVE);
-
-  //4. Show on screen (local echo - gone on  refresh);
-  displayTask(TASKTOSAVE);
-}
 
 function init() {
   console.log("App initialized");

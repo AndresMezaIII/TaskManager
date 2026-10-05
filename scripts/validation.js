@@ -1,8 +1,9 @@
-let empty = false;
 $("#btnSave").click(function (e) {
   e.preventDefault();
-  empty = false;
-  for (const SELECTOR of [
+
+  let empty = false;
+
+  for (const selector of [
     "#txtTitle",
     "#txtDescription",
     "#selColor",
@@ -10,12 +11,45 @@ $("#btnSave").click(function (e) {
     "#selDate",
     "#selStatus",
   ]) {
-    const value = $(SELECTOR).val();
+    const value = $(selector).val();
+    const invalid = value == null || value.trim() === "";
 
-    if (value == null || value.trim() === "") {
-      $(SELECTOR).css("border", "1px solid red");
+    $(selector).css("border", invalid ? "1px solid red" : "");
+    
+    if (invalid) {
       empty = true;
     }
+    if (empty) {
+    alert("Please fill out all fields");
+    return; // Stops before saving or appending
+  } else {
+    function saveTask() {
+  console.log("Saving Tasks...");
+
+  //read the values of each of the six inputs
+  //title, description, color, date, status, budget
+
+  //1. Read the values out of the DOM
+  const TITLE = $("#txtTitle").val();
+  const DESCRIPTION = $("#txtDescription").val();
+  const COLOR = $("#selColor").val();
+  const DATE = $("#selDate").val();
+  const STATUS = $("#selStatus").val();
+  const BUDGET = $("#numBudget").val();
+
+  //2. Build an object using our model
+  const TASKTOSAVE = new Task(TITLE, DESCRIPTION, COLOR, DATE, STATUS, BUDGET);
+
+  //3. Log task to show it works
+  console.log(TASKTOSAVE);
+
+  //4. Show on screen (local echo - gone on  refresh);
+  displayTask(TASKTOSAVE);
+}
   }
-  alert("Please fill out all fields");
+  }
+
+  
+
+  saveTask();
 });
