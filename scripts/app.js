@@ -1,3 +1,4 @@
+//asynchronous calls go at the very top so that all functions have access to them, and so that they are not hoisted and executed before the DOM is ready
 const API =
   "https://106api-b0bnggbsgnezbzcz.westus3-01.azurewebsites.net/api/tasks";
 
@@ -80,7 +81,7 @@ function saveTask() {
 
 function init() {
   console.log("App initialized");
-  $("#btnSave").click(saveTask);
+  //$("#btnSave").click(saveTask);
   $("#btnAll").click(function () {
     filter("All");
   });
