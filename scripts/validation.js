@@ -24,34 +24,39 @@ $("#btnSave").click(function (e) {
     saveTask();
   }
 
-  function saveTask() {
-    console.log("Saving Tasks...");
+function saveTask() {
+  // 1. Capture the form (unchanged from Session 2)
+  const title = $("#txtTitle").val();
+  const desc = $("#txtDescription").val();
+  const color = $("#selColor").val();
+  const date = $("#selDate").val();
+  const status = $("#selStatus").val();
+  const budget = $("#numBudget").val();
 
-    //read the values of each of the six inputs
-    //title, description, color, date, status, budget
+  // 2. Build the object
+  const data = new Task(title, desc, color, date, status, budget);
+  console.log("DATA before POST:", data);
 
-    //1. Read the values out of the DOM
-    const TITLE = $("#txtTitle").val().trim();
-    const DESCRIPTION = $("#txtDescription").val().trim();
-    const COLOR = $("#selColor").val();
-    const DATE = $("#selDate").val();
-    const STATUS = $("#selStatus").val();
-    const BUDGET = $("#numBudget").val().trim();
+  // 3. Send it
+  $.ajax({
+    type: "POST", // the verb for creating
+    url: API,
+    data: JSON.stringify(data), // serialize it
+    contentType: "application/json", // tell the server what it is
 
-    //2. Build an object using our model
-    const TASKTOSAVE = new Task(
-      TITLE,
-      DESCRIPTION,
-      COLOR,
-      DATE,
-      STATUS,
-      BUDGET,
-    );
+    success: function (created) {
+      console.log("CREATED:", created);
 
-    //3. Log task to show it works
-    console.log(TASKTOSAVE);
+      // 4. Show the SERVER's version, not ours
+      displayTask(created);
 
-    //4. Show on screen (local echo - gone on  refresh);
-    displayTask(TASKTOSAVE);
-  }
-});
+      // 5. Tidy up
+      clearForm();
+    },
+
+    error: function (err) {
+      console.error("POST error:", err.responseText || err);
+      alert("Task could not be saved.");
+    },
+  });
+}

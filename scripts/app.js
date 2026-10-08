@@ -1,11 +1,57 @@
 const API =
   "https://106api-b0bnggbsgnezbzcz.westus3-01.azurewebsites.net/api/tasks";
 
+function deleteTask() {
+  console.log("Delete button clicked");
+  //1. context
+  let btn = $(this);
+  //2. get the parent task (a div with class task)
+  let taskElement = btn.parents(".task");
+  //3. get the id of the task
+  let taskID = taskElement.attr("id");
+  //4.use this id to delete the selected element
+  $.ajax({
+    type: "DELETE",
+    url: API + "/" + taskID,
+    success: function () {
+      taskElement.fadeOut(500, function () {
+        $(this).remove(); //remove the task from the DOM after fadeOut() is complete
+      });
+    },
+    error: function (fails) {
+      console.log(fails);
+    },
+  });
+}
 
+function filter(status) {
+  if (status === "All") {
+    $(".task").show();
+  } else {
+    $(".task").hide();
+  }
+  $(".task").each(function () {
+    let taskStatus = $(this).find(".status").$text();
+    if (taskStatus === status) {
+      $(this).show();
+    }
+  });
+}
 
 function init() {
   console.log("App initialized");
   $("#btnSave").click(saveTask);
+  $("#btnAll").click(function () {
+    filter("All");
+  });
+  $("#btnDone").click(function () {
+    filter("Completed");
+  });
+  $("#btnTodo").click(function () {
+    filter("Pending");
+  });
+  //when someone clicks in the list class and the target is btnDelete run deleteTask
+  $(".list").on("click", ".btnDelete", deleteTask);
   loadTasks();
 }
 
