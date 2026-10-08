@@ -38,6 +38,46 @@ function filter(status) {
   });
 }
 
+function saveTask() {
+  console.log("Saving task...");
+  // 1. Capture the form input (unchanged from Session 2), read the values out of the DOM
+  const TITLE = $("#txtTitle").val().trim();
+  const DESCRIPTION = $("#txtDescription").val().trim();
+  const COLOR = $("#selColor").val();
+  const DATE = $("#selDate").val();
+  const STATUS = $("#selStatus").val();
+  const BUDGET = $("#numBudget").val();
+
+  // 2. Build the object using our argument
+  const DATA = new Task(TITLE, DESCRIPTION, COLOR, DATE, STATUS, BUDGET);
+  console.log("DATA before POST:", DATA);
+
+  //$('btnSave').click(saveTask); //this is the event handler, it will call saveTask when the button is clicked
+
+  // 3. Send it
+  $.ajax({
+    type: "POST", // the verb for creating
+    url: API,
+    data: JSON.stringify(DATA), // serialize it into a medium all components can understand, because some components are not JS
+    contentType: "application/json", // tell the server what it is
+
+    success: function (created) {
+      console.log("CREATED:", created);
+
+      // 4. Show the SERVER's version, not ours
+      displayTask(created);
+
+      // 5. Tidy up
+      clearForm();
+    },
+
+    error: function (err) {
+      console.error("POST error:", err.responseText || err);
+      alert("Task could not be saved.");
+    },
+  });
+}
+
 function init() {
   console.log("App initialized");
   $("#btnSave").click(saveTask);
