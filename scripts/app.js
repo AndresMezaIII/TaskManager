@@ -1,4 +1,4 @@
-//asynchronous calls go at the very top so that all functions have access to them, and so that they are not hoisted and executed before the DOM is ready
+//asynchronous calls go at the very top of the script so that all functions have access to them, and so that they are not hoisted and executed before the DOM is ready
 const API =
   "https://106api-b0bnggbsgnezbzcz.westus3-01.azurewebsites.net/api/tasks";
 
@@ -55,7 +55,7 @@ function saveTask() {
 
   //$('btnSave').click(saveTask); //this is the event handler, it will call saveTask when the button is clicked
 
-  // 3. Send it
+  // 3. Send it to the server using AJAX
   $.ajax({
     type: "POST", // the verb for creating
     url: API,
@@ -63,9 +63,9 @@ function saveTask() {
     contentType: "application/json", // tell the server what it is
 
     success: function (created) {
-      console.log("CREATED:", created);
+      console.log("Created:", created);
 
-      // 4. Show the SERVER's version, not ours
+      // 4. Show the SERVER's version on the screen, not ours
       displayTask(created);
 
       // 5. Tidy up
@@ -75,6 +75,25 @@ function saveTask() {
     error: function (err) {
       console.error("POST error:", err.responseText || err);
       alert("Task could not be saved.");
+    },
+  });
+}
+
+/*this function is not called by another function, you can call it from console to update your task with id 1, or you can add a button to call it from the UI*/
+function update() {
+  $.ajax({
+    type: "PUT", //HTTP verb for updating the entire file, not just a part of it
+    url: "https://106api-b0bnggbsgnezbzcz.westus3-01.azurewebsites.net/api/tasks/1", //where to send data, including the id of the task to update appended at the end of the URL (1)
+    data: JSON.stringify({
+      // Include the updated task data here
+      title: "Updated Task Title",
+    }), //serialize it into a medium all components can understand, because some components are not JS
+    contentType: "application/json", //tell the server what it is
+    success: function (response) {
+      console.log("Task updated successfully:", response);
+    },
+    error: function (err) {
+      console.error("Error updating task:", err.responseText || err);
     },
   });
 }
@@ -97,8 +116,9 @@ function init() {
 }
 
 function displayTask(task) {
+  //create the html syntax for a task, using the data from the task object
   let syntax = `
-    <div class="task" style="border-left-color: ${task.color}">
+    <div class="task" style="border-color: ${task.color}">
       
       <div class="info">
         <h4>${task.title}</h4>
@@ -127,10 +147,10 @@ function loadTasks() {
     success: function (data) {
       console.log("Server responded with: ", data);
 
-      //clear first, so repeat calls don't duplicate
+      //clear list first, so repeat calls don't duplicate
       $(".list").empty();
 
-      //loop through every task
+      //loop through every task fetched from the server, so displayTask doesn't need to be executed by saveTask() or init() anymore, it can be reused here to fetch up-to-date information off the server, including the requests sent by this computer via saveTask() and any other computer that has access to the server.
       for (let i = 0; i < data.length; i++) {
         displayTask(data[i]); //reuse the same render function
       }

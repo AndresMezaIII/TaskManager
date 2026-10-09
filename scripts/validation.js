@@ -2,7 +2,7 @@ $("#btnSave").click(function (e) {
   e.preventDefault();
   let empty = false;
 
-  for (const selector of [
+  for (const SELECTOR of [
     "#txtTitle",
     "#txtDescription",
     "#selColor",
@@ -10,11 +10,11 @@ $("#btnSave").click(function (e) {
     "#selDate",
     "#selStatus",
   ]) {
-    const value = $(selector).val();
-    const invalid = value == null || String(value).trim() === "";
+    const VALUE = $(SELECTOR).val();
+    const INVALID = VALUE == null || String(VALUE).trim() === "";
 
-    $(selector).css("border", invalid ? "1px solid red" : "");
-    if (invalid) empty = true;
+    $(SELECTOR).css("border", INVALID ? "1px solid red" : "");
+    if (INVALID) empty = true;
   }
 
   if (empty) {
