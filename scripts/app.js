@@ -4,18 +4,18 @@ const API =
 
 function deleteTask() {
   console.log("Delete button clicked");
-  //1. context
+  //1. context 'this' is the button that was clicked, so we can use it to find the parent task
   let btn = $(this);
   //2. get the parent task (a div with class task)
   let taskElement = btn.parents(".task");
-  //3. get the id of the task
+  //3. get the id of the task that is assigned by the server when the saveTask() function is called, and the server responds with the task object that includes the id which is a dynamically created html element attribute, so we can use jQuery to get it with .attr("id")
   let taskID = taskElement.attr("id");
   //4.use this id to delete the selected element
   $.ajax({
     type: "DELETE",
     url: API + "/" + taskID,
     success: function () {
-      taskElement.fadeOut(500, function () {
+      taskElement.fadeOut(1000, function () {
         $(this).remove(); //remove the task from the DOM after fadeOut() is complete
       });
     },
@@ -104,11 +104,14 @@ function init() {
   $("#btnAll").click(function () {
     filter("All");
   });
-  $("#btnDone").click(function () {
+  $("#btnCompleted").click(function () {
     filter("Completed");
   });
-  $("#btnTodo").click(function () {
-    filter("Pending");
+  $("#btnNew").click(function () {
+    filter("New");
+  });
+  $("#btnInProgress").click(function () {
+    filter("In Progress");
   });
   //when someone clicks in the list class and the target is btnDelete run deleteTask
   $(".list").on("click", ".btnDelete", deleteTask);
@@ -118,7 +121,7 @@ function init() {
 function displayTask(task) {
   //create the html syntax for a task, using the data from the task object
   let syntax = `
-    <div class="task" style="border-color: ${task.color}">
+    <div class="task" id="${task.id}"style="border-color: ${task.color}">
       
       <div class="info">
         <h4>${task.title}</h4>
@@ -132,6 +135,8 @@ function displayTask(task) {
         <label>Budget: ${task.budget}</label>
       </div>
     
+      <button class="btnDelete">Delete</button>
+
     </div><br>`;
 
   //"growing a new branch on the DOM tree"
