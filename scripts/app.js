@@ -32,7 +32,7 @@ function filter(status) {
     $(".task").hide();
   }
   $(".task").each(function () {
-    let taskStatus = $(this).find(".status").$text();
+    let taskStatus = $(this).find(".status").text();
     if (taskStatus === status) {
       $(this).show();
     }
