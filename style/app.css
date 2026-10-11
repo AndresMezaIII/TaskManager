@@ -17,12 +17,54 @@ body {
   margin-bottom: 20px;
 }
 
+form {
+  background-color: lightgray;
+  padding: 10px;
+  border-radius: 10px;
+  width: 40%;
+}
+
+label {
+  width: 15%;
+  margin: 10px;
+}
+
+input {
+  width: 15%;
+}
+
 /* Modern Responsive Grid */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+.form-flex {
+  display: flex;
+  flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
+  align-items: stretch;
+}
+
+.form-group {
+  display: flex;
+  margin: 0;
+  gap: 15;
+}
+
+.form-group > label {
+  flex: 0 0 120px;
+}
+
+.form-group > input,
+.form-group > select,
+.form-group > textarea {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.one,
+.two,
+.three {
+  flex: 1;
+  min-width: 0;
 }
 
 input,
